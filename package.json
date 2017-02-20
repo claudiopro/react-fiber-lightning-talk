@@ -1,7 +1,7 @@
 {
   "name": "react-fiber-lightning-talk",
   "version": "1.0.0",
-  "description": "",
+  "description": "Lightning talk on React Fiber for ReactJS Dublin Meetup",
   "homepage": "https://claudiopro.github.io/react-fiber-lightning-talk",
   "main": "index.html",
   "scripts": {
