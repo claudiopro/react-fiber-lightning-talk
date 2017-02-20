@@ -1,0 +1,258 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>React Fiber</title>
+
+		<meta name="description" content="Talk on the new Fiber reconciliation system of React">
+		<meta name="author" content="Claudio Procida">
+
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/moon.css" id="theme">
+
+		<!-- Code syntax highlighting -->
+		<!--link rel="stylesheet" href="lib/css/zenburn.css"-->
+		<link rel="stylesheet" href="node_modules/highlightjs/styles/railscasts.css">
+		<link href="https://fonts.googleapis.com/css?family=Courgette|Fira+Sans:300" rel="stylesheet" />
+		<!--link href="//cdn.jsdelivr.net/highlight.js/8.8.0/styles/github-gist.min.css" rel="stylesheet" /-->
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+		<style type="text/css">
+			.small-title h1 {
+				font-size: 3em;
+			}
+			.reveal h1,
+			.reveal h2,
+			.reveal p {
+				font-family: 'Fira Sans', sans-serif;
+				font-weight: 300;
+				text-transform: none;
+			}
+			.reveal code {
+				/*border: 2px solid ;*/
+			}
+			span.s {
+				text-decoration: line-through;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section data-markdown data-separator-notes="^Note:">
+					# React Fiber
+					## Overview of the rewrite of React's core
+					Claudio Procida [@claudiopro](https://github.com/claudiopro)
+				</section>
+
+				<section data-markdown>
+					# Hi!
+				</section>
+
+				<section data-background="https://jetstreamprojector.files.wordpress.com/2009/09/3300696905_512c9fc25f_b.jpg">
+				</section>
+
+				<section data-background="https://techpinions.com/wp-content/uploads/2013/10/5563065416_f9562778cc.jpg">
+				</section>
+
+				<section data-background="http://a.fastcompany.net/multisite_files/fastcompany/imagecache/inline-large/inline/2013/11/3021307-inline-fb-thumbsup-printpackaging.jpg">
+				</section>
+
+				<section data-background="https://facebook.github.io/react/img/logo.svg">
+				</section>
+
+				<section>
+					<h2>Core Concepts</h2>
+					
+					<ul>
+						<li class="fragment">Virtual DOM</li>
+						<li class="fragment">Reconciliation</li>
+						<li class="fragment">Push vs. Pull</li>
+						<li class="fragment">Updates</li>
+					</ul>
+
+					<aside class="notes">
+						Some notes
+					</aside>
+				</section>
+
+				<section data-background="https://c1.staticflickr.com/5/4007/4229175586_44111916a3_b.jpg">
+				</section>
+
+				<section>
+					<h1>Stack</h1>
+					
+					<ul>
+						<li class="fragment">Synchronous</li>
+						<li class="fragment">Recursive</li>
+						<li class="fragment">Render and reconcile</li>
+					</ul>
+				</section>
+
+				<section data-background="https://c1.staticflickr.com/8/7159/6815678009_444a2fa91e_b.jpg">
+				</section>
+
+				<section data-markdown data-separator-notes="^Note:">
+					# Stack: Issues
+					
+					* Heavyweight context
+					* Can't be split in chunks
+					* 
+					* See [Sebastian Markbåge's notes](https://github.com/facebook/react/issues/7942) for insight
+				</section>
+
+				<section data-background="https://c1.staticflickr.com/2/1494/26296983622_a398aaeef4_k.jpg">
+				</section>
+
+				<section>
+					<h1>Fiber</h1>
+					
+					<ul>
+						<li class="fragment">Complete rewrite of core</li>
+						<li class="fragment">Async reconciliation</li>
+						<li class="fragment">Atomic commit</li>
+					</ul>
+				</section>
+
+				<section data-markdown data-separator-notes="^Note:" class="small-title">
+					# Fiber: Internals 
+					
+					* `requestAnimationFrame`, `requestIdleCallback` APIs.
+					* Iterative, not recursive
+					* Linked lists of components
+					* While loops to reconcile and update
+				</section>
+
+				<section data-markdown data-separator-notes="^Note:">
+					# Fiber: Pros 🎉
+					
+					* Does not drop frames
+					* Splits work across frames
+					* Commits when work is complete
+				</section>
+
+				<section data-markdown data-separator-notes="^Note:">
+					# Fiber: Cons 😭
+					
+					* Harder to debug
+					* Better tooling needed
+					* Difficult to reason about
+				</section>
+
+				<section data-markdown data-separator-notes="^Note:">
+					# Fiber: Caveats
+
+					In Fiber, `setState()` calls will be batched more frequently. This code may not work as expected:
+
+					```jsx
+					// Wrong
+					this.setState({
+						counter: this.state.counter + this.props.increment
+					});
+					```
+
+					Use the callback form instead:
+
+					```jsx
+					// Correct
+					this.setState((prevState, props) => ({
+						counter: prevState.counter + props.increment
+					}));
+					```
+				</section>
+
+				<section data-markdown data-separator-notes="^Note:">
+					# Fiber: Extras 🎁
+					
+					* Error Boundaries
+					* Multiple components in `render()`
+					* Better SSR performance without client-side logic
+
+					Note:
+
+					React will add new features while implementing Fiber. It will add support for error handling via
+					Error Boundaries, sort of an equivalent to catch blocks. Error Boundaries are components to render
+					in case of exceptions in any of the lifecycle methods.
+
+					Additionally, render() will be able to return multiple components. This will support use cases like
+					tables, where collections of children should not be wrapped in parent elements. It will also play
+					nicely with Flexbox or Grid layouts where flex parent and children should not be separated by an
+					intermediate element.
+
+					Finally, server side rendering will be decoupled from the Stack implementation, which currently
+					slows down rendering to string, that requires no reconciliation. There is currently no plan to 
+					provide a replacement implementation, but it could be a streaming one. 
+				</section>
+
+				<section data-markdown data-separator-notes="^Note:">
+					# Fiber: When?
+					
+					* Expected enabled by default in React 16
+					* http://isfiberreadyyet.com
+
+					Note:
+
+					Fiber is expected to be available in 2017 and will be enabled by default in React 16.
+					The reason why it's not enabled yet is because it's still broken.
+					There is a website, isfiberready.com, which shows the progress in terms of test pass rate.
+					Currently, test success rate is 98.1%
+				</section>
+
+				<section data-markdown data-separator-notes="^Note:">
+					# Thank you!
+				</section>
+
+				<!-- <iframe src="./fiber-demo.html"></iframe> -->
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+
+			// Full list of configuration options available at:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				transition: 'slide', // none/fade/slide/convex/concave/zoom
+
+				// Optional reveal.js plugins
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true },
+					{ src: 'plugin/notes/notes.js', async: true }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
