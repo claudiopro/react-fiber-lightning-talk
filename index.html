@@ -116,7 +116,7 @@
 					
 					* Heavyweight context
 					* Can't be split in chunks
-					* 
+					* Java-like OO architecture
 					* See [Sebastian Markbåge's notes](https://github.com/facebook/react/issues/7942) for insight
 				</section>
 
@@ -133,10 +133,24 @@
 					</ul>
 				</section>
 
+
+				<section data-markdown data-separator-notes="^Note:">
+					# Fiber: Goals
+					
+					* Pause and resume work
+					* Assign priority to different types of work
+					* Reuse previously completed work
+					* Abort work that is no longer needed
+
+					Note:
+
+					In a sense, Fiber's goals are to build a flexible and extensible UI rendering scheduler
+				</section>
+
 				<section data-markdown data-separator-notes="^Note:" class="small-title">
 					# Fiber: Internals 
 					
-					* `requestAnimationFrame`, `requestIdleCallback` APIs.
+					* Uses `requestAnimationFrame`, `requestIdleCallback` APIs
 					* Iterative, not recursive
 					* Linked lists of components
 					* While loops to reconcile and update
