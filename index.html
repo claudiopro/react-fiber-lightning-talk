@@ -161,7 +161,7 @@
 					* Does not drop frames
 					* Splits work across frames
 					* Commits when work is complete
-					* De-prioritizes offscreen work
+					* Can de-prioritize offscreen work
 				</section>
 
 				<section data-markdown data-separator-notes="^Note:">
@@ -170,6 +170,7 @@
 					* Harder to debug
 					* Better tooling needed
 					* Difficult to reason about
+					* Non instantaneous updates
 				</section>
 
 				<section data-markdown data-separator-notes="^Note:">
@@ -199,7 +200,7 @@
 					
 					* Error Boundaries
 					* Multiple components in `render()`
-					* Portals
+					* Portals for dialogs
 					* Better SSR performance without client-side logic
 
 					Note:
@@ -227,6 +228,7 @@
 				<section data-markdown data-separator-notes="^Note:">
 					# Fiber: When?
 					
+					* Already in master HEAD (go check it out! 😍)
 					* Expected enabled by default in React 16
 					* http://isfiberreadyyet.com
 
