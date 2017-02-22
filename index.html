@@ -18,10 +18,8 @@
 		<link rel="stylesheet" href="css/theme/moon.css" id="theme">
 
 		<!-- Code syntax highlighting -->
-		<!--link rel="stylesheet" href="lib/css/zenburn.css"-->
-		<link rel="stylesheet" href="node_modules/highlightjs/styles/railscasts.css">
+		<link rel="stylesheet" href="lib/css/zenburn.css">
 		<link href="https://fonts.googleapis.com/css?family=Courgette|Fira+Sans:300" rel="stylesheet" />
-		<!--link href="//cdn.jsdelivr.net/highlight.js/8.8.0/styles/github-gist.min.css" rel="stylesheet" /-->
 
 		<!-- Printing and PDF exports -->
 		<script>
@@ -42,9 +40,6 @@
 				font-family: 'Fira Sans', sans-serif;
 				font-weight: 300;
 				text-transform: none;
-			}
-			.reveal code {
-				/*border: 2px solid ;*/
 			}
 			span.s {
 				text-decoration: line-through;
@@ -178,7 +173,7 @@
 
 					In Fiber, `setState()` calls will be batched more frequently. This code may not work as expected:
 
-					```jsx
+					```js
 					// Wrong
 					this.setState({
 						counter: this.state.counter + this.props.increment
@@ -187,7 +182,7 @@
 
 					Use the callback form instead:
 
-					```jsx
+					```js
 					// Correct
 					this.setState((prevState, props) => ({
 						counter: prevState.counter + props.increment
@@ -217,6 +212,12 @@
 					Finally, server side rendering will be decoupled from the Stack implementation, which currently
 					slows down rendering to string, that requires no reconciliation. There is currently no plan to 
 					provide a replacement implementation, but it could be a streaming one. 
+				</section>
+
+				<section data-markdown data-separator-notes="^Note:">
+					# Demo
+
+					[Fiber vs Stack](https://claudiopro.github.io/react-fiber-vs-stack-demo/)
 				</section>
 
 				<section data-markdown data-separator-notes="^Note:">
